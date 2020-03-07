@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { inject, observer } from "mobx-react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import "./app.css";
+
+import { List } from "./components/list";
+import { Cat } from "./components/cat";
+import { SearchFilter } from "./components/searchFilter";
+
+@inject("catsStore")
+@observer
+class App extends React.Component {
+  render() {
+    const {
+      cat,
+      filter,
+      changeFilter,
+      cats,
+      suspendCat,
+      getInfo
+    } = this.props.catsStore;
+
+    return (
+      <div className="main">
+        <div className="list">
+          <SearchFilter filter={filter} changeFilter={changeFilter} />
+          <List cats={cats} suspendCat={suspendCat} getInfo={getInfo} />
+        </div>
+        {cat && <Cat cat={cat} />}
+      </div>
+    );
+  }
 }
 
 export default App;
